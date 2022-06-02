@@ -11,5 +11,6 @@ import lombok.*;
 public class Response<T> {
 
     private T data;
-    private ExceptionResponse exceptionResponse;
+    private String error;
+    private String message;
 }

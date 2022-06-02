@@ -20,13 +20,10 @@ public class ResponseFactory {
     }
 
     public <T> Response<T> response(T data, String error, String message) {
-        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
-                .code(error)
-                .message(message)
-                .build();
         Response<T> response = Response.<T>builder()
                 .data(data)
-                .exceptionResponse(exceptionResponse)
+                .error(error)
+                .message(message)
                 .build();
         log.info("Generated response: {}", response);
         return response;

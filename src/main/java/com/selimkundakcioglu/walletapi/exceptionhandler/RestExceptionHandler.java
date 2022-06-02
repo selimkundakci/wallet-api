@@ -47,7 +47,7 @@ public class RestExceptionHandler {
     }
 
     private <T> Response<T> handleAppException(BaseException e, String error, Object... args) {
-        log.error("{} is caught.", e.getClass().getName(), e);
+        log.error("{} is caught.", e.getClass().getName());
         String message = messageSource.getMessage(error, args, Locale.getDefault());
         return responseFactory.response(error, message);
     }
