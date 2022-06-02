@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+hazelcast:
+  management-center:
+    scripting-enabled:
+  enabled: true
+  cluster: false
+  servers:
+    - localhost:5701
+
+
+springdoc:
+  api-docs:
+    path: /api-docs
+    enabled: true
+  swagger-ui:
+    enabled: true
+  override-with-generic-response: false
