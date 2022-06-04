@@ -15,13 +15,10 @@ public class StatusConverter implements AttributeConverter<Status, Integer> {
     }
 
     public Status convertToEntityAttribute(Integer value) {
-        switch (value) {
-            case 1:
-                return Status.ACTIVE;
-            case 0:
-                return Status.PASSIVE;
-            default:
-                return Status.DELETED;
-        }
+        return switch (value) {
+            case 1 -> Status.ACTIVE;
+            case 0 -> Status.PASSIVE;
+            default -> Status.DELETED;
+        };
     }
 }

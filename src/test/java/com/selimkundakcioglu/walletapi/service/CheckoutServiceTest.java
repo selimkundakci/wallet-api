@@ -10,6 +10,8 @@ import com.selimkundakcioglu.walletapi.model.enumtype.Currency;
 import com.selimkundakcioglu.walletapi.model.enumtype.Status;
 import com.selimkundakcioglu.walletapi.model.enumtype.TransactionType;
 import com.selimkundakcioglu.walletapi.model.request.CheckoutRequest;
+import com.selimkundakcioglu.walletapi.stubbuilder.CheckoutStubBuilder;
+import com.selimkundakcioglu.walletapi.stubbuilder.WalletAccountStubBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,8 +50,8 @@ class CheckoutServiceTest {
     @Test
     void checkout() {
         // given
-        CheckoutRequest checkoutRequest = getCheckoutRequest();
-        WalletAccount mockWalletAccount = getWalletAccount();
+        CheckoutRequest checkoutRequest = CheckoutStubBuilder.getCheckoutRequest();
+        WalletAccount mockWalletAccount = WalletAccountStubBuilder.getWalletAccount();
         Transaction mockTransaction = getTransaction();
         TransactionDto mockTransactionDto = getTransactionDto();
 
@@ -79,8 +81,8 @@ class CheckoutServiceTest {
     @Test
     void checkout_throwsException_when_referenceCodeAlreadyExists() {
         // given
-        CheckoutRequest checkoutRequest = getCheckoutRequest();
-        WalletAccount mockWalletAccount = getWalletAccount();
+        CheckoutRequest checkoutRequest = CheckoutStubBuilder.getCheckoutRequest();
+        WalletAccount mockWalletAccount = WalletAccountStubBuilder.getWalletAccount();
 
         when(walletAccountService.getWalletAccountByUserIdAndCurrency(checkoutRequest.getUserId(), checkoutRequest.getCurrency()))
                 .thenReturn(mockWalletAccount);
@@ -102,8 +104,8 @@ class CheckoutServiceTest {
     @Test
     void checkout_throwsException_when_balanceNotEnough() {
         // given
-        CheckoutRequest checkoutRequest = getCheckoutRequest();
-        WalletAccount mockWalletAccount = getWalletAccount();
+        CheckoutRequest checkoutRequest = CheckoutStubBuilder.getCheckoutRequest();
+        WalletAccount mockWalletAccount = WalletAccountStubBuilder.getWalletAccount();
         mockWalletAccount.setBalance(BigDecimal.ZERO);
 
         when(walletAccountService.getWalletAccountByUserIdAndCurrency(checkoutRequest.getUserId(), checkoutRequest.getCurrency()))
@@ -131,24 +133,6 @@ class CheckoutServiceTest {
                 .status(Status.ACTIVE)
                 .build();
     }
-
-    private CheckoutRequest getCheckoutRequest() {
-        CheckoutRequest checkoutRequest = new CheckoutRequest();
-        checkoutRequest.setAmount(BigDecimal.ONE);
-        checkoutRequest.setCurrency(Currency.TRY);
-        checkoutRequest.setReferenceId("referenceId");
-        checkoutRequest.setUserId("userId");
-        return checkoutRequest;
-    }
-
-    private WalletAccount getWalletAccount() {
-        return WalletAccount.builder()
-                .status(Status.ACTIVE)
-                .balance(BigDecimal.TEN)
-                .currency(Currency.TRY)
-                .build();
-    }
-
     private TransactionDto getTransactionDto() {
         return TransactionDto.builder()
                 .transactionType(TransactionType.CHECKOUT)

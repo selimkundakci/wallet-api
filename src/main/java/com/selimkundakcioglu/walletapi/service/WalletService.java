@@ -52,6 +52,12 @@ public class WalletService {
         return walletMapper.toWalletDto(walletAccount.getWallet());
     }
 
+    public WalletDto queryWallet(String userId) {
+        Optional<Wallet> optionalWallet = walletRepository.findByUserIdAndStatus(userId, Status.ACTIVE);
+
+        return optionalWallet.map(walletMapper::toWalletDto).orElse(null);
+    }
+
     private void checkIfAnAccountIsPresentWithGivenCurrency(CreateWalletAccountRequest createWalletAccountRequest, Wallet wallet) {
         boolean accountIsPresentWithGivenCurrency = !wallet.getWalletAccounts()
                 .stream()
@@ -61,12 +67,6 @@ public class WalletService {
         if (accountIsPresentWithGivenCurrency) {
             throw new BusinessException(ExceptionCodes.ACCOUNT_PRESENT_WITH_GIVEN_CURRENCY);
         }
-    }
-
-    public WalletDto queryWallet(String userId) {
-        Optional<Wallet> optionalWallet = walletRepository.findByUserIdAndStatus(userId, Status.ACTIVE);
-
-        return optionalWallet.map(walletMapper::toWalletDto).orElse(null);
     }
 
     private void checkIfThereIsAnActiveUser(String userId) {

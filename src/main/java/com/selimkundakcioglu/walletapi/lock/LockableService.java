@@ -1,5 +1,6 @@
 package com.selimkundakcioglu.walletapi.lock;
 
+import com.selimkundakcioglu.walletapi.constants.ExceptionCodes;
 import com.selimkundakcioglu.walletapi.exception.LockException;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.cp.lock.FencedLock;
@@ -25,18 +26,18 @@ public class LockableService {
             exception.printStackTrace();
         }
         log.error("alreadyLocked => lockKey:{}, methodName:{}", lockKey, methodName);
-        throw new LockException("lock failed for lockKey:" + lockKey + ", methodName:" + methodName);
+        throw new LockException(ExceptionCodes.LOCK_FAILED, lockKey, methodName);
     }
 
     public void unlock(FencedLock lock, String methodName, String lockKey) {
         try {
             if (lock == null) {
-                log.warn("alreadyUnlocked => lockKey:{}, methodName:{}", lockKey, methodName);
+                log.warn("Already unlocked => lockKey:{}, methodName:{}", lockKey, methodName);
             } else {
                 lock.unlock();
             }
         } catch (Exception exception) {
-            log.error("unlockError => lockKey:{}, methodName:{}", lock != null ? lock.getName() : null, methodName);
+            log.error("UnlockError => lockKey:{}, methodName:{}", lock != null ? lock.getName() : null, methodName);
             exception.printStackTrace();
         }
     }

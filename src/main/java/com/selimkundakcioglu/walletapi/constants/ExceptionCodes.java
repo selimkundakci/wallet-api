@@ -10,4 +10,5 @@ public class ExceptionCodes {
     public static final String ACCOUNT_NOT_FOUND = "202";
     public static final String WALLET_NOT_FOUND = "300";
     public static final String ACCOUNT_PRESENT_WITH_GIVEN_CURRENCY = "301";
+    public static final String LOCK_FAILED = "400";
 }

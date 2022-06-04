@@ -2,6 +2,7 @@ package com.selimkundakcioglu.walletapi.exceptionhandler;
 
 import com.selimkundakcioglu.walletapi.exception.BaseException;
 import com.selimkundakcioglu.walletapi.exception.BusinessException;
+import com.selimkundakcioglu.walletapi.exception.LockException;
 import com.selimkundakcioglu.walletapi.model.response.Response;
 import com.selimkundakcioglu.walletapi.model.response.ResponseFactory;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,12 @@ public class RestExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(UNPROCESSABLE_ENTITY)
     public <T> Response<T> handleBusinessException(BusinessException e) {
+        return handleAppException(e, e.getCode(), e.getArgs());
+    }
+
+    @ExceptionHandler(LockException.class)
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
+    public <T> Response<T> handleLockException(LockException e) {
         return handleAppException(e, e.getCode(), e.getArgs());
     }
 
